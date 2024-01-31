@@ -1,2 +1,5 @@
-pycache
+*pycache*
 .*.swp
+dist/
+docs/_build
+
