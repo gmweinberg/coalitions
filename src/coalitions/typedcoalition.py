@@ -126,10 +126,11 @@ class TypedCoalitionalGame:
         grand = self.coalition_valuation(tuple_from_dict(self.player_types))
         keys = sorted([key for key in self.player_types])
         offsets = {}
+        one = {}
         for ii in range(len(keys)):
             ones = tuple([(keys[iii], 1) if iii == ii else (keys[iii], 0) for iii in range(len(keys))])
-            offsets[ii] = self.coalition_valuation(ones)
-        offtotal = sum([offsets[insert_zeros(key, keys)] * self.player_types[key] for key in keys])
+            offsets[keys[ii]] = self.coalition_valuation(ones)
+        offtotal = sum( [offsets[key]* self.player_types[key] for key in keys])
         if offtotal < grand:
             newgrand = 1
             scale = 1 / (grand - offtotal)
@@ -145,7 +146,7 @@ class TypedCoalitionalGame:
             off = sum([offsets[elm[0]] * elm[1] for elm in atuple])
             vals[atuple] = (old - off) * scale
         fun = lambda type_counts: vals[type_counts]
-        theGame = CoalitionalGame(player_types=self.player_types, coalition_valuation=fun)
+        theGame = TypedCoalitionalGame(player_types=self.player_types, coalition_valuation=fun)
         return theGame, newgrand
 
     def is_equivalent(self, game):
