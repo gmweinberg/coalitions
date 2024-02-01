@@ -20,6 +20,18 @@ def un_security_old(player_counts):
         return 1
     return 0
 
+def us_bill(player_counts):
+    """For a us bill to become a law, it must have either
+       A majority in congress C and the senate S and be signed by the president P OR
+       A 2/3 majority in both C and S
+    """
+    counts = dict_from_tuple(player_counts)
+    if counts['S'] > 50 and counts['C'] > 217 and counts['P'] > 0:
+        return 1
+    if counts['S'] > 66 and counts['C'] > 289:
+        return 1
+    return 0
+
 
 if __name__ == '__main__':
     # gloves game. Shapley and banzhaf values must be the same for Colition and TypedCoalition
@@ -67,3 +79,9 @@ if __name__ == '__main__':
     corgi = CoalitionalGame(vals)
     print('is_core yes', corgi.is_core({1:0, 2:1, 3:2}))
     print('is_core no', corgi.is_core({1:1, 2:2, 3:0}))
+
+    # bill becomes a law
+    tg_bill =  TypedCoalitionalGame(player_types = {'P':1, 'S':100, 'C':535}, coalition_valuation = us_bill)
+    print('us bill shapeley', tg_bill.get_shapley_values())
+    print('us bill banzhaf', tg_bill.get_banzhaf_values())
+
