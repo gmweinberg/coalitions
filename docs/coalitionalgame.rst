@@ -40,11 +40,11 @@ Returns a dict where the key is the player label and the value is the Banzhaf va
 
 
 get_shapley_values(self)
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 Returns a dict where the key is the player label and the value is the Shapley value.
 
 simulate_shapley_values(self, perms)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For large player sets it may not be feasible to calculate the Shapley values precisely, since this requires
 checking the values of all subcoalitions. This method calculates an approximate Shapley value using a fixed number
 of permutations.
