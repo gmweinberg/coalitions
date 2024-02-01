@@ -2,8 +2,8 @@
 import sys
 sys.path.append('../src')
 from coalitions.util import *
-from coalitions.coalition import *
-from coalitions.typedcoalition import *
+from coalitions.coalitionalgame import *
+from coalitions.typedcoalitionalgame import *
 
 def un_security_old(player_counts):
     """According to "old" security council rules for a ruling to pass it needs supprt of all
@@ -67,6 +67,3 @@ if __name__ == '__main__':
     corgi = CoalitionalGame(vals)
     print('is_core yes', corgi.is_core({1:0, 2:1, 3:2}))
     print('is_core no', corgi.is_core({1:1, 2:2, 3:0}))
-
-
-
