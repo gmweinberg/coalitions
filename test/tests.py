@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import time
 sys.path.append('../src')
 from coalitions.util import *
 from coalitions.coalitionalgame import *
@@ -35,6 +36,7 @@ def us_bill(player_counts):
 
 if __name__ == '__main__':
     # gloves game. Shapley and banzhaf values must be the same for Colition and TypedCoalition
+    started = time.time()
     vals = {('L1', 'R'):1,('L2', 'R'):1}
     cgg =  CoalitionalGame(vals)
     print('coalitional gloves game shapeley', cgg.get_shapley_values())
@@ -46,6 +48,7 @@ if __name__ == '__main__':
     vals = {(('L', 1), ('R',1)):1}
     tgp = {'L':2, 'R':1}
     tgg = create_typed_game(player_types=tgp, coalition_values=vals)
+    print('typed gloves game valuation', tgg.get_valuation())
     print('typed gloves game shapeley', tgg.get_shapley_values())
     print('typed gloves game shapeley simulated ', tgg.simulate_shapley_values(10000))
     print('typed gloves games banzhaf', tgg.get_banzhaf_values())
@@ -81,7 +84,24 @@ if __name__ == '__main__':
     print('is_core no', corgi.is_core({1:1, 2:2, 3:0}))
 
     # bill becomes a law
-    tg_bill =  TypedCoalitionalGame(player_types = {'P':1, 'S':100, 'C':535}, coalition_valuation = us_bill)
-    print('us bill shapeley', tg_bill.get_shapley_values())
-    print('us bill banzhaf', tg_bill.get_banzhaf_values())
+    if False:
+        tg_bill =  TypedCoalitionalGame(player_types = {'P':1, 'S':100, 'C':435}, coalition_valuation = us_bill)
+        print('us bill shapeley simulated', tg_bill.simulate_shapley_values(10000)) # actual calculation takes forever
+        print('us bill banzhaf', tg_bill.get_banzhaf_values())
+
+    # voting games must give the same value
+    player_strengths = {'o1':1, 'o2':1, 'o3':1, 'o4':1, 'o5':1, 'o6':1, 'o7':1, 't1':3, 't2':3, 't3':3}
+    vg = create_voting_game(player_strengths)
+    print('voting game shapley', vg.get_shapley_values())
+    print('voting game banzhaf', vg.get_banzhaf_values())
+
+    player_types = {'three':3, 'one':7}
+    type_strengths = {'three':3, 'one':1}
+    tgv = create_typed_voting_game(player_types=player_types, type_strengths=type_strengths)
+    print('typed voting game shapley', tgv.get_shapley_values())
+    print('typed voting game banzhaf', tgv.get_banzhaf_values())
+
+
+
+    print('elapsed', round(time.time() - started, 2))
 

@@ -70,7 +70,7 @@ class CoalitionalGame:
 
 
     def get_shapley_values(self):
-        """Calculate and retur the shapley values"""
+        """Calculate and return the shapley values"""
         shapley = defaultdict(float)
         perms = 0
         for perm in permutations(self.players):
@@ -175,12 +175,15 @@ class CoalitionalGame:
         return True
 
 
-def create_voting_game(player_strengths, crit):
+def create_voting_game(player_strengths, crit=None):
     """Create a colatitional game from a player strengths dict.
        Return the game.
        A weighted majority voting game has a value of 1 if the sum of player strengths * number of players
        voting for the measure exceeds a critical value."""
     players = set([player for player in player_strengths])
+    if crit is None:
+        total_strength = sum([player_strengths[player] for player in player_strengths])
+        crit = 0.01 + total_strength / 2
     coalition_values = {}
     for elm in powerset(players):
         key = frozenset(elm)

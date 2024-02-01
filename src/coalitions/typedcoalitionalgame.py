@@ -13,7 +13,8 @@ __all__ = ('TypedCoalitionalGame', 'create_typed_voting_game',
            'create_typed_game')
 
 class TypedCoalitionalGame:
-    """A TypedCoalitionalGame has a dictionary called player_types which gives the count of each  a set of players and a function giving the value of each subset of
+    """A TypedCoalitionalGame has a dictionary called player_types which gives the count of each 
+      of a set of players and a function giving the value of each subset of
       members, called a coalition. In this implementation I support the notion of player "types":
       the value of a coalition depends on the number of types of each player.
       If all players are unique, there is just one player of each type.
@@ -208,11 +209,15 @@ def fill_vals(vals, player_types):
             vals[combo] = max_
 
 
-def create_typed_voting_game(player_types, type_strengths, crit):
+def create_typed_voting_game(player_types, type_strengths, crit=None):
     """Create a colatitional game from a player strengths tuple and  a tupe_stengs dict.
        Returnthe game.
        A weighted majority voting game has a value of 1 if the sum of player strengths * number of players
        voting for the measure exceeds a critical value."""
+    if crit is None:
+        total_strength = sum([player_types[type_] * type_strengths[type_] for type_ in player_types])
+        crit = .001 + total_strength / 2
+
     strength = lambda player_counts: sum([type_strengths[pc[0]] * pc[1] for pc in player_counts])
     fun = lambda player_counts: int(strength(player_counts) >= crit)
     theGame = TypedCoalitionalGame(player_types=player_types, coalition_valuation=fun)
